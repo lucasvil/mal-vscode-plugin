@@ -3,29 +3,60 @@
 	"name": "MAL",
 	"patterns": [
 		{
-			"include": "#keywords"
+			"include": "#strings"
 		},
 		{
-			"include": "#strings"
+			"include": "#comments"
+		},
+		{
+			"include": "#storage"
 		}
 	],
 	"repository": {
-		"keywords": {
+		"storage": {
 			"patterns": [
 				{
-					"name": "keyword.control.mal",
-					"match": "\\b(if|while|for|return)\\b"
+					"name": "storage.type.mal",
+					"match": "\\b(category|asset|let|include)\\b"
 				}
 			]
 		},
 		"strings": {
-			"name": "string.quoted.double.mal",
 			"begin": "\"",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.begin.mal"
+				}
+			},
 			"end": "\"",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.string.end.mal"
+				}
+			},
+			"name": "string.quoted.double.mal",
 			"patterns": [
 				{
-					"name": "constant.character.escape.mal",
-					"match": "\\\\."
+					"match": "\\\\.",
+					"name": "constant.character.escape.mal"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.line.double-slash.mal",
+					"begin": "//",
+					"end": "\\n"
+				},
+				{
+					"name": "comment.block.empty.mal",
+					"match": "/\\*\\*/"
+				},
+				{
+					"name": "comment.block.mal",
+					"begin": "/\\*",
+					"end": "\\*/"
 				}
 			]
 		}
