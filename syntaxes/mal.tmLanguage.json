@@ -4,237 +4,281 @@
 	"scopeName": "source.mal",
 	"patterns": [
 		{
-			"include": "#definitions"
-		},
-		{
 			"begin": "\\b(include)\\b\\s*",
 			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.include.mal"
-				},
-				"2": {
-					"name": "storage.modifier.mal"
-				}
+				"1": { "name": "keyword.other.include.mal" },
+				"2": { "name": "storage.modifier.mal" }
 			},
-			"end": "\\s*(\\n)",
+			"end": "\\n",
 			"name": "meta.include.mal",
 			"contentName": "storage.modifier.include.mal",
 			"patterns": [
-				{
-					"include": "#comments"
-				},
-				{
-					"include": "#strings"
-				}
+				{ "include": "#comments" },
+				{ "include": "#strings" }
 			]
 		},
 		{
-			"begin": "\\#\\s*",
+			"begin": "(\\#)(\\w+):",
 			"beginCaptures": {
-				"0": {
-					"name": "keyword.other.symbol.define-start.mal"
-				},
-				"1": {
-					"name": "entity.name.define.key.mal"
-				},
-				"2": {
-					"name": "entity.name.define.test.mal"
-				}
+				"1": { "name": "keyword.other.symbol.define-start.mal"	},
+				"2": { "name": "entity.name.tag.define.key.mal" }
 			},
-			"end": "\\s*(\\n)",
+			"end": "(\\n)",
 			"name": "meta.define.mal",
 			"contentName": "storage.modifier.define.mal",
 			"patterns": [
-				{
-					"include": "#comments"
-				},
-				{
-					"include": "#strings"
-				}
-			]
-		},
-		{
-			"begin": "\\b(category)\\b\\s*(\\w+)",
-			"beginCaptures": {
-				"1": {
-					"name": "storage.type.category.mal"
-				},
-				"2": {
-					"name": "entity.name.section.category.mal"
-				}
-			},
-			"end": "}",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.section.category.end.bracket.curly.mal"
-				}
-			},
-			"name": "meta.category.mal",
-			"patterns": [
-				{
-					"include": "#definitions"
-				},
-				{
-					"begin": "\\b(asset)\\b\\s*(\\w+)",
-					"beginCaptures": {
-						"1": {
-							"name": "storage.modifier.asset.mal"
-						},
-						"2": {
-							"name": "entity.name.type.asset.mal"
-						}
-					},
-					"end": "}",
-					"endCaptures": {
-						"0": {
-							"name": "punctuation.section.asset.end.bracket.curly.mal"
-						}
-					},
-					"name": "meta.asset.mal",
-					"patterns": [
-						{
-							"begin": "([\\#|E|!E|&|\\|])\\s*(\\w+)",
-							"beginCaptures": {
-								"1": {
-									"name": "keyword.operator.attckstep.mal"
-								},
-								"2": {
-									"name": "entity.name.function.attackstep.mal"
-								}
-							},
-							"end": "([}|\\#|E|!E|&|\\|])",
-							"name": "meta.attackstep.mal",
-							"patterns": [
-								{
-									"include": "#code"
-								}
-							]
-						},
-						{
-							"include": "#code"
-						}
-					]
-				},
-				{
-					"include": "#comments"
-				},
-				{
-					"include": "#storage"
-				}
+				{	"include": "#comments" },
+				{	"include": "#strings" }
 			]
 		},
 		{
 			"begin": "\\b(associations)\\b",
 			"beginCaptures": {
-				"1": {
-					"name": "keyword.other.associations.mal"
-				}
+				"1": { "name": "keyword.other.associations.mal"	}
 			},
 			"end": "}",
 			"endCaptures": {
-				"0": {
-					"name": "punctuation.section.associations.end.bracket.curly.mal"
-				}
+				"0": { "name": "punctuation.section.associations.end.bracket.curly.mal" }
 			},
 			"name": "meta.associations.mal",
+			"patterns": [
+				{ "include": "#association-body" },
+				{	"include": "#comments" },
+				{	"include": "#storage"	}
+			]
+		},
+		{ "include": "#category" },
+		{ "include": "#comments" },
+		{ "include": "#definitions" },
+		{ "include": "#informations" },
+		{ "include": "#strings" }
+	],
+	"repository": {
+		"abstract-asset": {
+			"begin": "\\b(abstract)\\b\\s*\\b(asset)\\b\\s*(\\w+)",
+			"beginCaptures": {
+				"1": { "name": "storage.modifier.abstract.mal" },
+				"2": { "name": "storage.modifier.asset.mal"	},
+				"3": { "name": "entity.name.type.asset.mal"	}
+			},
+			"end": "}",
+			"endCaptures": {
+				"0": { "name": "punctuation.section.asset.end.bracket.curly.mal" }
+			},
+			"patterns": [
+				{ "include": "#asset-extends" },
+				{ "include": "#attack-step" },
+				{ "include": "#attack-step-body" },
+				{ "include": "#comments" },
+				{ "include": "#definitions" },
+				{ "include": "#informations" }
+			]
+		},
+		"asset": {
+			"begin": "\\b(asset)\\b\\s*(\\w+)",
+			"beginCaptures": {
+				"1": { "name": "storage.modifier.asset.mal"	},
+				"2": { "name": "entity.name.type.asset.mal"	}
+			},
+			"end": "}",
+			"endCaptures": {
+				"0": { "name": "punctuation.section.asset.end.bracket.curly.mal" }
+			},
+			"patterns": [
+				{ "include": "#asset-extends" },
+				{ "include": "#attack-step" },
+				{ "include": "#attack-step-body" },
+				{ "include": "#comments" },
+				{ "include": "#definitions" },
+				{ "include": "#informations" }
+			]
+		},
+		"asset-extends": {
+			"match": "\\b(extends)\\b\\s*(\\w+)",
+			"captures": {
+				"1": { "name": "storage.modifier.asset.mal"	},
+				"2": { "name": "entity.name.type.asset.mal"	},
+				"3": { "name": "storage.modifier.extends.mal" },
+				"4": { "name": "entity.name.type.asset.mal" }
+			},
+			"patterns": [
+				{ "include": "#attack-step" },
+				{ "include": "#attack-step-body" },
+				{ "include": "#comments" },
+				{ "include": "#definitions" },
+				{ "include": "#informations" }
+			]
+		},
+		"association-body": {
 			"patterns": [
 				{
 					"match": "(\\w+)\\s*(\\[)(\\w+)(\\])\\s*([1|0..1|*])\\s*",
 					"name": "meta.association.body.left.mal",
 					"captures": {
-						"1": {
-							"name": "entity.name.type.asset.association.mal"
-						},
-						"2": {
-							"name": "punctuation.section.begin.bracket.mal"
-						},
-						"3": {
-							"name": "entity.name.function.attackstep.association.mal"
-						},
-						"4": {
-							"name": "punctuation.section.end.bracket.mal"
-						},
-						"5": {
-							"name": "constant.numeric.mal"
-						}
+						"1": { "name": "entity.name.type.asset.association.mal"	},
+						"2": { "name": "punctuation.section.begin.bracket.mal" },
+						"3": { "name": "entity.name.function.attackstep.association.mal" },
+						"4": { "name": "punctuation.section.end.bracket.mal" },
+						"5": { "name": "constant.numeric.mal"	}
 					}
 				},
 				{
 					"begin": "(<--)\\s*(\\w+)",
 					"beginCaptures": {
-						"1": {
-							"name": "markup.heading.association.start.mal"
-						},
-						"2": {
-							"name": "entity.other.association.mal"
-						}
+						"1": { "name": "markup.heading.association.start.mal"	},
+						"2": { "name": "entity.other.association.mal"	}
 					},
 					"end": "-->",
 					"endCaptures": {
-						"0": {
-							"name": "markup.heading.association.end.mal"
-						}
+						"0": { "name": "markup.heading.association.end.mal"	}
 					},
-					"name": "meta.association.body.middle.mal",
-					"patterns": [
-						{
-							"include": "#markups"
-						},
-						{
-							"include": "#comments"
-						}
-					]
+					"name": "meta.association.body.middle.mal"
 				},
 				{
 					"match": "([1|0..1|*])\\s*\\s*(\\[)(\\w+)(\\])\\s*(\\w+)",
 					"name": "meta.association.body.right.mal",
 					"captures": {
-						"1": {
-							"name": "constant.numeric.mal"
-						},
-						"2": {
-							"name": "punctuation.section.begin.bracket.mal"
-						},
-						"3": {
-							"name": "entity.name.function.attackstep.association.mal"
-						},
-						"4": {
-							"name": "punctuation.section.end.bracket.mal"
-						},
-						"5": {
-							"name": "entity.name.type.asset.association.mal"
-						}
+						"1": { "name": "constant.numeric.mal" },
+						"2": { "name": "punctuation.section.begin.bracket.mal" },
+						"3": { "name": "entity.name.function.attackstep.association.mal" },
+						"4": { "name": "punctuation.section.end.bracket.mal" },
+						"5": { "name": "entity.name.type.asset.association.mal"	}
 					}
-				},
-				{
-					"include": "#comments"
-				},
-				{
-					"include": "#storage"
 				}
 			]
 		},
-		{
-			"include": "#code"
-		}
-	],
-	"repository": {
-		"anonymous-block-and-instance-initializer": {
-			"begin": "{",
+		"attack-step": {
+			"begin": "(\\#|E|\\!E|&|\\|)\\s*(\\w+)",
 			"beginCaptures": {
-				"0": {
-					"name": "punctuation.section.block.begin.bracket.curly.mal"
-				}
+				"1": { "name": "keyword.operator.attckstep.mal" },
+				"2": { "name": "entity.name.function.attackstep.mal" }
+			},
+			"end": "\\n",
+			"name": "meta.attackstep.mal",
+			"patterns": [
+				{ "include": "#comments" },
+				{ "include": "#definitions" },
+				{ "include": "#informations" },
+				{ "include": "#keywords" }
+			]
+		},
+		"attack-step-body": {
+			"begin": "(->|<-)\\s*(\\w+)",
+			"beginCaptures": {
+				"1": { "name": "keyword.operator.attackstep.operators.mal" },
+				"2": { "name": "entity.name.selector.attackstep.mal" }
+			},
+			"end": "\n",
+			"name": "meta.attackstep.body.mal",
+			"patterns": [
+				{ "include": "#comments" },
+				{ "include": "#definitions" },
+				{ "include": "#informations" },
+				{ "include": "#keywords" }
+			]
+		},
+		"category": {
+			"begin": "\\b(category)\\b\\s*(\\w+)",
+			"beginCaptures": {
+				"1": { "name": "storage.type.category.mal" },
+				"2": { "name": "entity.name.section.category.mal"	}
 			},
 			"end": "}",
 			"endCaptures": {
-				"0": {
-					"name": "punctuation.section.block.end.bracket.curly.mal"
-				}
+				"0": { "name": "punctuation.section.category.end.bracket.curly.mal"	}
 			},
+			"name": "meta.category.mal",
+			"patterns": [
+				{ "include": "#abstract-asset" },
+				{ "include": "#asset" },
+				{ "include": "#comments" },
+				{ "include": "#definitions" },
+				{ "include": "#informations" },
+				{ "include": "#strings" }
+			]
+		},
+		"comments": {
 			"patterns": [
 				{
-					"include": "#code"
+					"name": "comment.line.double-slash.mal",
+					"begin": "//",
+					"end": "\\n"
+				},
+				{
+					"name": "comment.block.empty.mal",
+					"match": "/\\*\\*/"
+				},
+				{
+					"name": "comment.block.mal",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		"definitions":{
+			"begin": "\\b(let)\\b\\s*(\\w+)\\s*(=)",
+			"captures": {
+				"1": { "name": "storage.type.let.mal"	},
+				"2": { "name": "variable.other.definition.mal" },
+				"3": { "name": "keyword.operator.assignment.mal" }
+			},
+			"end": "\\n",
+			"name": "meta.definition.mal",
+			"patterns": [{	"include": "#keywords" }]
+		},
+		"informations": {
+			"patterns": [
+				{
+					"begin": "\\b(developer info)\\b\\s*",
+					"captures": {
+						"1": { "name": "keyword.other.info.developer.mal"	}
+					},
+					"end": "\\n",
+					"name": "meta.info.developer.mal",
+					"patterns": [
+						{	"include": "#keywords" },
+						{ "include": "#strings" }
+					]
+				},
+				{
+					"begin": "\\b(modeler info)\\b\\s*",
+					"captures": {
+						"1": { "name": "keyword.other.info.modeler.mal"	}
+					},
+					"end": "\\n",
+					"name": "meta.info.modeler.mal",
+					"patterns": [
+						{	"include": "#keywords" },
+						{ "include": "#strings" }
+					]
+				},
+				{
+					"begin": "\\b(user info)\\b\\s*",
+					"captures": {
+						"1": { "name": "keyword.other.info.user.mal"	}
+					},
+					"end": "\\n",
+					"name": "meta.info.user.mal",
+					"patterns": [
+						{	"include": "#keywords" },
+						{ "include": "#strings" }
+					]
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.other.info.mal",
+					"match": "\\b(modeler info|user info|developer info|TTC)\\b"
+				},
+				{
+					"name": "keyword.operator.attackstep.mal",
+					"match": "(\\#|E|!E|&|\\|)"
+				},
+				{
+					"name": "keyword.operator.attackstep.operators.mal",
+					"match": "(/\\|\\\/|->|<-|\\+>)"
 				}
 			]
 		},
@@ -258,61 +302,6 @@
 				}
 			]
 		},
-		"strings": {
-			"begin": "\"",
-			"beginCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.begin.mal"
-				}
-			},
-			"end": "\"",
-			"endCaptures": {
-				"0": {
-					"name": "punctuation.definition.string.end.mal"
-				}
-			},
-			"name": "string.quoted.double.mal",
-			"patterns": [
-				{
-					"match": "\\\\.",
-					"name": "constant.character.escape.mal"
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"name": "comment.line.double-slash.mal",
-					"begin": "//",
-					"end": "\\n"
-				},
-				{
-					"name": "comment.block.empty.mal",
-					"match": "/\\*\\*/"
-				},
-				{
-					"name": "comment.block.mal",
-					"begin": "/\\*",
-					"end": "\\*/"
-				}
-			]
-		},
-		"keywords": {
-			"patterns": [
-				{
-					"name": "keyword.other.mal",
-					"match": "\\b(modeler info|user info|developer info|TTC)\\b"
-				},
-				{
-					"name": "keyword.operator.attackstep.mal",
-					"match": "(\\#|E|!E|&|\\|)"
-				},
-				{
-					"name": "keyword.operator.attackstep.operators.mal",
-					"match": "(/\\|\\\/|->|<-|\\+>)"
-				}
-			]
-		},
 		"storage-modifiers": {
 			"patterns": [
 				{
@@ -329,61 +318,20 @@
 				}
 			]
 		},
-		"markups": {
-			"begin": "<--",
-			"end": "-->"
-		},
-		"definitions":{
-			"begin": "\\b(let)\\b\\s*(\\w+)\\s*(=)",
-			"captures": {
-				"1": {
-					"name": "storage.type.let.mal"
-				},
-				"2": {
-					"name": "variable.other.definition.mal"
-				},
-				"3": {
-					"name": "keyword.operator.assignment.mal"
-				}
+		"strings": {
+			"begin": "\"",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.mal" }
 			},
-			"end": "\\n",
-			"name": "meta.definition.mal",
+			"end": "\"",
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.mal" }
+			},
+			"name": "string.quoted.double.mal",
 			"patterns": [
 				{
-					"include": "#keywords"
-				}
-			]
-		},
-		"code": {
-			"patterns": [
-				{
-					"include": "#storage"
-				},
-				{
-					"include": "#keywords"
-				},
-				{
-					"include": "#storage-modifiers"
-				},
-				{
-					"include": "#comments"
-				},
-				{
-					"include": "#strings"
-				},
-				{
-					"include": "#anonymous-block-and-instance-initializer"
-				},
-				{
-					"include": "#definitions"
-				},
-				{
-				  "match": ",",
-				  "name": "punctuation.separator.delimiter.mal"
-				},
-				{
-				  "match": "\\.",
-				  "name": "punctuation.separator.period.mal"
+					"match": "\\\\.",
+					"name": "constant.character.escape.mal"
 				}
 			]
 		}
