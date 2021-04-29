@@ -158,6 +158,7 @@
 			"patterns": [
 				{ "include": "#comments" },
 				{ "include": "#definitions" },
+				{ "include": "#distributions" },
 				{ "include": "#informations" },
 				{ "include": "#keywords" }
 			]
@@ -225,6 +226,34 @@
 			"end": "\\n",
 			"name": "meta.definition.mal",
 			"patterns": [{	"include": "#keywords" }]
+		},
+		"distributions": {
+			"patterns": [
+				{
+					"name": "constant.language.distribution.bernoulli.mal",
+					"match": "\\b(Bernoulli)\\b"
+				},
+				{
+					"name": "constant.language.distribution.exponential.mal",
+					"match": "\\b(Exponential)\\b"
+				},
+				{
+					"name": "constant.language.distribution.log-normal.mal",
+					"match": "\\b(LogNormal)\\b"
+				},
+				{
+					"name": "constant.language.distribution.pareto.mal",
+					"match": "\\b(Pareto)\\b"
+				},
+				{
+					"name": "constant.language.distribution.truncated-normal.mal",
+					"match": "\\b(TruncatedNormal)\\b"
+				},
+				{
+					"name": "constant.language.distribution.uniform.mal",
+					"match": "\\b(Uniform)\\b"
+				}
+			]
 		},
 		"informations": {
 			"patterns": [
