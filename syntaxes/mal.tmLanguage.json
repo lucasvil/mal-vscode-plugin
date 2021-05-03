@@ -51,7 +51,9 @@
 		{ "include": "#comments" },
 		{ "include": "#definitions" },
 		{ "include": "#informations" },
-		{ "include": "#strings" }
+		{ "include": "#set-operations" },
+		{ "include": "#strings" },
+		{ "include": "#type-of" }
 	],
 	"repository": {
 		"abstract-asset": {
@@ -160,7 +162,9 @@
 				{ "include": "#definitions" },
 				{ "include": "#distributions" },
 				{ "include": "#informations" },
-				{ "include": "#keywords" }
+				{ "include": "#keywords" },
+				{ "include": "#set-operations" },
+				{ "include": "#type-of" }
 			]
 		},
 		"attack-step-body": {
@@ -175,7 +179,9 @@
 				{ "include": "#comments" },
 				{ "include": "#definitions" },
 				{ "include": "#informations" },
-				{ "include": "#keywords" }
+				{ "include": "#keywords" },
+				{ "include": "#set-operations" },
+				{ "include": "#type-of" }
 			]
 		},
 		"category": {
@@ -195,7 +201,8 @@
 				{ "include": "#comments" },
 				{ "include": "#definitions" },
 				{ "include": "#informations" },
-				{ "include": "#strings" }
+				{ "include": "#strings" },
+				{ "include": "#type-of" }
 			]
 		},
 		"comments": {
@@ -223,9 +230,13 @@
 				"2": { "name": "variable.other.definition.mal" },
 				"3": { "name": "keyword.operator.assignment.mal" }
 			},
-			"end": "\\n",
+			"end": "\\s",
 			"name": "meta.definition.mal",
-			"patterns": [{	"include": "#keywords" }]
+			"patterns": [
+				{ "include": "#comments" },
+				{	"include": "#keywords" },
+				{ "include": "#set-operations" }
+			]
 		},
 		"distributions": {
 			"patterns": [
@@ -307,8 +318,31 @@
 				},
 				{
 					"name": "keyword.operator.attackstep.operators.mal",
-					"match": "(/\\|\\\/|->|<-|\\+>)"
+					"match": "(->|<-|\\+>)"
+				},
+				{
+					"name": "keyword.operator.union.mal",
+					"match": "(\\\\/)"
+				},
+				{
+					"name": "keyword.operator.intersection.mal",
+					"match": "(/\\\\)"
 				}
+			]
+		},
+		"set-operations": {
+			"begin": "(\\w+)\\s*(\\\\/|/\\\\)\\s*(\\w+)",
+			"captures": {
+				"1": { "name": "variable.other.definition.mal"	},
+				"2": { "name": "keyword.operator.set.operator.mal" },
+				"3": { "name": "variable.other.definition.mal" }
+			},
+			"end": "\\n",
+			"name": "meta.set.operation.mal",
+			"patterns": [
+				{ "include": "#comments" },
+				{	"include": "#keywords" },
+				{ "include": "#type-of" }
 			]
 		},
 		"storage": {
@@ -361,6 +395,49 @@
 				{
 					"match": "\\\\.",
 					"name": "constant.character.escape.mal"
+				}
+			]
+		},
+		"type-of": {
+			"patterns": [
+				{
+					"begin": "(\\w+).(\\w+)\\[(\\w+)\\].(\\w+)",
+					"captures": {
+						"1": { "name": "entity.name.section.category.mal" },
+						"2": { "name": "entity.name.type.asset.mal" },
+						"3": { "name": "entity.name.section.sub-class.mal" },
+						"4": { "name": "entity.name.function.attackstep.mal" }
+					},
+					"end": "\\n|\\t|\\s",
+					"name": "meta.type-of.mal",
+					"patterns": [
+						{ "include": "#comments" }
+					]
+				},
+				{
+					"begin": "(\\w+)\\[(\\w+)\\].(\\w+)",
+					"captures": {
+						"1": { "name": "entity.name.type.asset.mal" },
+						"2": { "name": "entity.name.section.section.sub-class.mal" },
+						"3": { "name": "entity.name.function.attackstep.mal" }
+					},
+					"end": "\\n|\\t|\\s",	
+					"name": "meta.type-of.mal",
+					"patterns": [
+						{ "include": "#comments" }
+					]
+				},
+				{
+					"begin": "(\\w+)\\[(\\w+)\\]",
+					"captures": {
+						"1": { "name": "entity.name.type.asset.mal" },
+						"2": { "name": "entity.name.section.sub-class.mal" }
+					},
+					"end": "\\n|\\t|\\s",
+					"name": "meta.type-of.mal",
+					"patterns": [
+						{ "include": "#comments" }
+					]
 				}
 			]
 		}
