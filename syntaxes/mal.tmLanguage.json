@@ -152,7 +152,7 @@
 		"attack-step": {
 			"begin": "(\\#|E|\\!E|&|\\|)\\s*(\\w+)",
 			"beginCaptures": {
-				"1": { "name": "keyword.operator.attckstep.mal" },
+				"1": { "name": "keyword.control.attckstep.mal" },
 				"2": { "name": "entity.name.function.attackstep.mal" }
 			},
 			"end": "\\n",
@@ -171,7 +171,7 @@
 			"begin": "(->|<-)\\s*(\\w+)",
 			"beginCaptures": {
 				"1": { "name": "keyword.operator.attackstep.operators.mal" },
-				"2": { "name": "entity.name.selector.attackstep.mal" }
+				"2": { "name": "variable.other.attackstep.mal" }
 			},
 			"end": "\n",
 			"name": "meta.attackstep.body.mal",
@@ -313,7 +313,7 @@
 					"match": "\\b(modeler info|user info|developer info|TTC)\\b"
 				},
 				{
-					"name": "keyword.operator.attackstep.mal",
+					"name": "keyword.control.attackstep.mal",
 					"match": "(\\#|E|!E|&|\\|)"
 				},
 				{
@@ -401,24 +401,10 @@
 		"type-of": {
 			"patterns": [
 				{
-					"begin": "(\\w+).(\\w+)\\[(\\w+)\\].(\\w+)",
-					"captures": {
-						"1": { "name": "entity.name.section.category.mal" },
-						"2": { "name": "entity.name.type.asset.mal" },
-						"3": { "name": "entity.name.section.sub-class.mal" },
-						"4": { "name": "entity.name.function.attackstep.mal" }
-					},
-					"end": "\\n|\\t|\\s",
-					"name": "meta.type-of.mal",
-					"patterns": [
-						{ "include": "#comments" }
-					]
-				},
-				{
 					"begin": "(\\w+)\\[(\\w+)\\].(\\w+)",
 					"captures": {
 						"1": { "name": "entity.name.type.asset.mal" },
-						"2": { "name": "entity.name.section.section.sub-class.mal" },
+						"2": { "name": "entity.name.type.section.sub-class.mal" },
 						"3": { "name": "entity.name.function.attackstep.mal" }
 					},
 					"end": "\\n|\\t|\\s",	
@@ -431,7 +417,7 @@
 					"begin": "(\\w+)\\[(\\w+)\\]",
 					"captures": {
 						"1": { "name": "entity.name.type.asset.mal" },
-						"2": { "name": "entity.name.section.sub-class.mal" }
+						"2": { "name": "entity.name.type.sub-class.mal" }
 					},
 					"end": "\\n|\\t|\\s",
 					"name": "meta.type-of.mal",
