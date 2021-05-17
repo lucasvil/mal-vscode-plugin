@@ -49,7 +49,6 @@
 		},
 		{ "include": "#category" },
 		{ "include": "#comments" },
-		{ "include": "#definitions" },
 		{ "include": "#informations" },
 		{ "include": "#set-operations" },
 		{ "include": "#strings" },
@@ -159,7 +158,6 @@
 			"name": "meta.attackstep.mal",
 			"patterns": [
 				{ "include": "#comments" },
-				{ "include": "#definitions" },
 				{ "include": "#distributions" },
 				{ "include": "#informations" },
 				{ "include": "#keywords" },
@@ -177,7 +175,6 @@
 			"name": "meta.attackstep.body.mal",
 			"patterns": [
 				{ "include": "#comments" },
-				{ "include": "#definitions" },
 				{ "include": "#informations" },
 				{ "include": "#keywords" },
 				{ "include": "#set-operations" },
@@ -199,7 +196,6 @@
 				{ "include": "#abstract-asset" },
 				{ "include": "#asset" },
 				{ "include": "#comments" },
-				{ "include": "#definitions" },
 				{ "include": "#informations" },
 				{ "include": "#strings" },
 				{ "include": "#type-of" }
