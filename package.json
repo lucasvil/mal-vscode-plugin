@@ -1,5 +1,6 @@
 {
 	"name": "mal-plugin",
+	"publisher": "erikhanstad",
 	"displayName": "mal-plugin",
 	"description": "Plugin for MAL",
 	"version": "0.0.1",
