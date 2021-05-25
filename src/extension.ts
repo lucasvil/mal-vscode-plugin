@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient';
+import * as findJavaHome from 'find-java-home';
 
 // main launcher class
 const main: string = 'StdioLauncher';
@@ -15,38 +16,40 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Extension "mal-plugin" is now active!');
 
-	const { JAVA_HOME } = process.env;
-
-	console.log(`JAVA_HOME: ${JAVA_HOME}`);
-
-	if (JAVA_HOME) {
-		// java exec path
-		let excecutable: string = path.join(JAVA_HOME, 'bin', 'java');
-
-		// launcher path
-		let classPath = path.join(__dirname, '..', 'launcher', 'launcher.jar');
-		const args: string[] = ['-cp', classPath];
-
-		// server options
-		let serverOptions: ServerOptions = {
-			command: excecutable,
-			args: [...args, main],
-			options: {}
-		};
-
-		// client options
-		let clientOptions: LanguageClientOptions = {
-			// Register the server for plain text documents
-			documentSelector: [{ scheme: 'file', language: 'mal' }]
-		};
-
-		// The command has been defined in the package.json file
-		// Now provide the implementation of the command with registerCommand
-		// The commandId parameter must match the command field in package.json
-		let disposable = new LanguageClient('mal', 'MAL Language Server', serverOptions, clientOptions).start();
-
-		context.subscriptions.push(disposable);
-	}
+	findJavaHome({allowJre: true}, (err, home) => {
+		if(err){return console.log(err);}		
+		console.log(`JAVA_HOME: ${home}`);
+		
+		if (home) {
+			// java exec path
+			let excecutable: string = path.join(home, 'bin', 'java');
+			
+			// launcher path
+			let classPath = path.join(__dirname, '..', 'launcher', 'launcher.jar');
+			const args: string[] = ['-cp', classPath];
+			
+			// server options
+			let serverOptions: ServerOptions = {
+				command: excecutable,
+				args: [...args, main],
+				options: {}
+			};
+			
+			// client options
+			let clientOptions: LanguageClientOptions = {
+				// Register the server for plain text documents
+				documentSelector: [{ scheme: 'file', language: 'mal' }],
+				synchronize: {fileEvents: vscode.workspace.createFileSystemWatcher('**/.clientrc')}
+			};
+			
+			// The command has been defined in the package.json file
+			// Now provide the implementation of the command with registerCommand
+			// The commandId parameter must match the command field in package.json
+			let disposable = new LanguageClient('mal', 'MAL Language Server', serverOptions, clientOptions).start();
+			
+			context.subscriptions.push(disposable);
+		}
+	});
 }
 
 // this method is called when your extension is deactivated
